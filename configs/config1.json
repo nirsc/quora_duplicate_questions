@@ -1,0 +1,17 @@
+{
+
+"data_file": "C:\\Users\\NIR\\PycharmProjects\\quora_duplicate_questions\\data\\quora_duplicate_questions.h5",
+
+"model_params": {
+
+
+"optimizer": "adam",
+
+
+"num_epochs": 1000,
+
+
+"model_type": "siamese"
+
+}
+}
