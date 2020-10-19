@@ -9,7 +9,6 @@ import re
 from utils.embeddings import *
 from time import time
 from sklearn.model_selection import train_test_split
-from utils.profiling import *
 #read and organize data
 
 def read_data(data_file,nrows = None, delim = '\t'):

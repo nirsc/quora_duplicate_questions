@@ -37,7 +37,7 @@ if __name__=="__main__":
     load_weights = config.get('load_weights',None)
     ckpt = config.get('checkpoint',None)
     initial_epoch = 0
-    
+
     if load_weights:
         if not ckpt:
             ckpt = tf.train.latest_checkpoint('./checkpoint')
