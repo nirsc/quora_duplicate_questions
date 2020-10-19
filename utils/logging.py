@@ -1,6 +1,7 @@
 import tensorflow as tf
 from datetime import datetime
 
+
 def get_log_dir():
     return "logs/scalars/" + datetime.now().strftime("%Y%m%d-%H%M%S")
 
@@ -16,22 +17,13 @@ def EarlyStopping(min_delta = 0.001):
     return tf.keras.callbacks.EarlyStopping(min_delta = min_delta, mode='max', monitor='val_loss', patience=2)
 
 
-def LearningRateScheduler():
-    def lr_schedule(epoch):
-        """
-        Returns a custom learning rate that decreases as epochs progress.
-        """
-        learning_rate = 0.2
-        if epoch > 10:
-            learning_rate = 0.02
-        if epoch > 20:
-            learning_rate = 0.01
-        if epoch > 50:
-            learning_rate = 0.005
-
-        tf.summary.scalar('learning rate', data=learning_rate, step=epoch)
-        return learning_rate
-
-    lr_callback = tf.keras.callbacks.LearningRateScheduler(lr_schedule)
+def ModelCheckPoint(checkpoint_dir  = './checkpoint/', save_freq = 'epoch'):
+    checkpoint_path = checkpoint_dir +"/cp-{epoch:04d}.ckpt"
+    return tf.keras.callbacks.ModelCheckpoint(
+    filepath=checkpoint_path,
+    save_weights_only=True,
+    monitor='val_acc',
+    mode='max',
+    save_best_only=False)
 
 

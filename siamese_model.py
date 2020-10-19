@@ -8,6 +8,7 @@ with warnings.catch_warnings():
     from tensorflow.keras import Model,Input
     from tensorflow.keras.layers import LSTM, Multiply, subtract, concatenate, Dense, Embedding
     from tensorflow.keras.backend import sum as tf_sum
+    from utils.metrics import *
 
 class SiameseModel(object):
     """
@@ -42,8 +43,16 @@ class SiameseModel(object):
         self.squared_euclidean_distance = k.expand_dims(self.squared_euclidean_distance, axis=-1)
         self.features = concatenate([self.question_1_encoding, self.question_2_encoding,\
                                   self.Hadamard, self.squared_euclidean_distance],)
-        self.h1 = Dense(1100,activation='relu')(self.features)
-        self.h2 = Dense(800, activation='relu')(self.h1)
-        self.out = Dense(2, activation='softmax')(self.h2)
+        self.h1 = Dense(800,activation='relu')(self.features)
+        self.dropout1 = keras.layers.Dropout(0.7)(self.h1)
+        self.h2 = Dense(800,activation='relu')(self.dropout1)
+        self.dropout2 = keras.layers.Dropout(0.7)(self.h2)
+        self.out = Dense(2, activation='softmax')(self.dropout2)
+        initial_learning_rate = model_params['lr']
+        decay_rate = model_params['lr_decay_rate']
+        learning_rate = keras.optimizers.schedules.ExponentialDecay(initial_learning_rate,decay_steps=10000,
+                                                                              decay_rate = decay_rate,staircase=True)
+        optimizer = keras.optimizers.Adam(learning_rate = learning_rate)
         self.model = Model(inputs = [self.sentence_1,self.sentence_2,self.len_sent_1,self.len_sent_2], outputs=[self.out])
-        self.model.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['binary_accuracy'])
+
+        self.model.compile(loss="binary_crossentropy", optimizer= optimizer, metrics=['binary_accuracy',f1_m])

@@ -2,13 +2,22 @@
 
 "data_file": "C:\\Users\\NIR\\PycharmProjects\\quora_duplicate_questions\\data\\quora_duplicate_questions.h5",
 
+"max_len": null,
+
+  "load_weights":0,
+
 "model_params": {
 
 
 "optimizer": "adam",
 
+  "lr": 0.001,
 
-"num_epochs": 1000,
+
+"num_epochs": 100,
+
+
+  "lr_decay_rate": 0.9,
 
 
 "model_type": "siamese"
