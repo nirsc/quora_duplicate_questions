@@ -1,2 +1,0 @@
-ways to improve sentence vectors - remove function words. Either by list or by frequency.
-use tf-idf to get weights for each word and multiply word vector by its tf-idf coefficient.
